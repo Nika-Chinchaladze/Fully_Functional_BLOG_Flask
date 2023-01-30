@@ -1,0 +1,54 @@
+{% include 'header.html' %}
+<!-- Page Header-->
+<header class="masthead" style="background-image: url({{ url_for('static', filename='assets/img/home-bg.jpg') }})">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>Nika's Blog</h1>
+                    <span class="subheading">A Collection of Nika's random musings.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content-->
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+
+            <!-- Post preview-->
+            {% for blog in blog_list: %}
+                <div class="post-preview">
+                    <a href="{{ url_for('post_page', id=blog.id)}}">
+                        <h2 class="post-title">{{ blog.title }}</h2>
+                        <h3 class="post-subtitle">{{ blog.subtitle }}</h3>
+                    </a>
+                    <p class="post-meta">
+                        Posted by
+                        <a href="#">{{ blog.author.name }}</a>
+                        on {{ blog.date }}
+                        <a href="{{ url_for('delete_page', id=blog.id) }}">
+                            <!-- Button Should be visible only for Admin, whose id = 1 -->
+                            {% if user_id == 1: %}
+                                <i style="color: #850000;" class="fa-regular fa-trash-can"></i>
+                            {% endif %}
+                        </a>
+                    </p>
+                </div>
+                <!-- Divider-->
+                <hr class="my-4" />
+            {% endfor %}
+
+            <!-- Button Should be visible only for Admin, whose id = 1 -->
+            {% if user_id == 1: %}
+                <div class="d-flex justify-content-end mb-4">
+                    <a class="btn btn-primary text-uppercase" href="{{ url_for('add_page') }}">CREATE NEW POST →</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<!-- Footer-->
+{% include 'footer.html' %}

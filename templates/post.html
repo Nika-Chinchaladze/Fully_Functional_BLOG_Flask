@@ -1,0 +1,63 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% include 'header.html' %}
+
+
+<!-- Page Header-->
+<header class="masthead" style="background-image: url({{ blog_post.img_url }})">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-heading">
+                    <h1>{{ blog_post.title }}</h1>
+                    <h2 class="subheading">{{ blog_post.subtitle }}</h2>
+                    <span class="meta">
+                        Posted by
+                        <a href="#!">{{ blog_post.author.name }}</a>
+                        on {{ blog_post.date }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Post Content-->
+<article class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <p style="text-align: justify;">
+                    {{ blog_post.body | safe }}
+                </p>
+                {% if user_id == 1: %}
+                    <div class="d-flex justify-content-end mb-4">
+                        <a class="btn btn-primary text-uppercase" href="{{ url_for('edit_page', id=blog_post.id) }}">EDIT POST</a>
+                    </div>
+                {% endif %}
+                <!-- Load ckeditor into body input field -->
+                {{ ckeditor.load() }}
+                {{ ckeditor.config(name="body") }}
+                <!-- This is where the form will go -->
+                {{ wtf.quick_form(form, novalidate=True) }}
+            </div>
+            <!-- Comments Area Starts -->
+                <div class="col-lg-8 col-md-10 mx-auto comment">
+                    {% for comment in blog_post.comments: %}
+                        <div class="commenterImage">
+                            <div>
+                                <img style="border-radius: 50%;" src="{{ comment.comment_author.email | gravatar }}">
+                            </div>
+                            <div>
+                                <p>{{ comment.body | safe }}</p>
+                                <span class="date sub-text">{{ comment.comment_author.name }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            <!-- Comments Area Ends -->
+        </div>
+    </div>
+</article>
+<!-- Footer-->
+<hr>
+{% include 'footer.html' %}
+
