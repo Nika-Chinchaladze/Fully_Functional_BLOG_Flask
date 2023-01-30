@@ -11,10 +11,11 @@ from functools import wraps
 from form_class import PostForm, RegisterForm, LoginForm, CommentForm
 from date_class import CurrentDate
 from email_class import SendEmail
+import os
 
 # GENERATE FLASK APPLICATION:
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "TommyShelby"
+app.config["SECRET_KEY"] = os.environ.get("MY_SECRET_KEY")
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
